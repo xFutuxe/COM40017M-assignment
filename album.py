@@ -8,9 +8,11 @@ class Album: # A single album item
             raise ValueError("Title cannot be empty.")
         if not (self.min_rating <= rating <= self.max_rating):
             raise ValueError(f"Rating must be between {self.min_rating} and {self.max_rating}.")
+        if not year.strip().isdigit() or len(year.strip()) != 4:
+            raise ValueError("Year must be a 4-digit number.")
         self.title = title.strip()
         self.artist = artist.strip()
-        self.year = year.strip()
+        self.year = int(year.strip())
         self.rating = rating
         self.notes = notes
         self.genre = genre
