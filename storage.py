@@ -14,14 +14,14 @@ class StorageManager():
 
 
     def load(self):
-        if not os.path.exists(self.filepath): # If file does not exist
-            self.albums = []
-            return self.albums
-
         try:
             with open(self.filepath, encoding="utf-8") as file:
                 raw_data = json.load(file)
                 self.albums = [Album.from_dict(item) for item in raw_data]
+        except FileNotFoundError:
+            self.albums = []
+            with open(self.filepath, "w", encoding="utf-8") as file:
+                json.dump([], file)
         except Exception as e:
             print(f"An unexpected error has occured while reading file '{self.filepath}': {e}")
         return self.albums
