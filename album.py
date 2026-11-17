@@ -17,7 +17,7 @@ class Album: # A single album item
         if not isinstance (year, int):
             raise TypeError("Year must be a integer.")
         if not (1900 <= year <= self.current_year): # Check if the year is suitable.
-            raise ValueError(f"Year must be between 1900 and {self.current_years}")
+            raise ValueError(f"Year must be between 1900 and {self.current_year}")
         if not genre.strip():
             raise ValueError("Genre cannot be empty")
         self.title = title.strip()
@@ -52,4 +52,13 @@ class Album: # A single album item
             genre=data["genre"],
             notes=data["notes"],
             date_added=data["Date Logged"]
+        )
+
+
+    def matches_query(self, query):
+        cleanQuery = query.strip().lower()
+        return (
+            cleanQuery in self.title.lower()
+            or cleanQuery in self.artist.lower()
+            or cleanQuery in self.genre.lower()
         )

@@ -3,8 +3,10 @@ from album import Album
 
 class StorageManager():
 
-    filepath = "data.json"
-    albums = []
+    def __init__(self, filepath="data.json"):
+        self.filepath = filepath
+        self.albums = []
+        self.load()
 
     def add_album(self, album):
         if not isinstance(album, Album):
@@ -30,3 +32,8 @@ class StorageManager():
         data = [album.to_dict() for album in self.albums]
         with open(self.filepath, "w", encoding="utf-8") as file:
             json.dump(data, file, indent=4, default=str)
+
+    def search_results(self, query):
+        if not query.strip():
+            return list(self.albums)
+        return [album for album in self.albums if album.matches_query(query)]
