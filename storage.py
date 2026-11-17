@@ -29,4 +29,4 @@ class StorageManager():
     def save(self):
         data = [album.to_dict() for album in self.albums]
         with open(self.filepath, "w", encoding="utf-8") as file:
-            json.dump(data, file, indent=4)
+            json.dump(data, file, indent=4, default=str)

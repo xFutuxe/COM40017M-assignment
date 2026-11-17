@@ -1,11 +1,15 @@
 import subprocess, os, time
 import album, storage
+from rich.console import Console
+from rich.table import Table
 
 data = storage.StorageManager()
+console = Console()
+view_album_table = Table(title="Albums")
 
 def main_menu():
     subprocess.run("clear" if os.name == "posix" else "cls", shell=True)
-    print("Welcome to the Album Log Tracker!")
+    console.print("[blue underline bold]Welcome to the Album Log Tracker!")
     print("Please choose an option:")
     print("1. Add a new album")
     print("2. View all albums")
@@ -30,17 +34,24 @@ def main_menu():
 
 def add_album():
     subprocess.run("clear" if os.name == "posix" else "cls", shell=True)
-    artist = input("Artist Name: ")
-    albumName = input("Album Name:")
-    releaseYear = int(input("Release Year: "))
-    rating = int(input("Rating (1-5): "))
-    genre = input("Genre: ")
-    notes = input("Notes: ")
+    try:
+        artist = input("Artist Name: ")
+        albumName = input("Album Name:")
+        releaseYear = int(input("Release Year: "))
+        rating = int(input("Rating (1-5): "))
+        genre = input("Genre: ")
+        notes = input("Notes: ")
+        data.add_album(album.Album(artist, albumName, releaseYear, rating, genre, notes))
+    except ValueError as error:
+        print(f"Error: {error}. Please try again.")
+        time.sleep(2)
+        add_album()
 
-    data.add_album(album.Album(artist, albumName, releaseYear, rating, genre, notes))
+    
 
 def view_albums():
-    print("loading albums")
+    subprocess.run("clear" if os.name == "posix" else "cls", shell=True)
+    print("Loading albums")
     time.sleep(2)
     subprocess.run("clear" if os.name == "posix" else "cls", shell=True)
 
@@ -49,10 +60,14 @@ def view_albums():
     if not albums:
         print("No albums found, add some!")
     else:
-        print("---Your Albums---")
+        view_album_table.add_column("Artist")
+        view_album_table.add_column("Album")
+        view_album_table.add_column("Release Year")
+        view_album_table.add_column("Rating")
+        view_album_table.add_column("Date Added")
         for index, album in enumerate(albums, start=1):
-            print(f"{index}. {album}")
-
+            view_album_table.add_row(f"{album.artist}", f"{album.title}", f"{album.year}", f"{album.rating}/5", f"{album.date_added}")
+    console.print(view_album_table)
     input("Press enter to return to the main menu")
 if __name__ == "__main__":
     while True:

@@ -1,3 +1,4 @@
 # Ignoring any data files
 *.json
 __pycache__
+.DS_Store
