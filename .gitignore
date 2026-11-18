@@ -1,4 +1,6 @@
 # Ignoring any data files
 *.json
 __pycache__
+.venv
+venv/
 .DS_Store
