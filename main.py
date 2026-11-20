@@ -9,7 +9,7 @@ from rich import box
 
 data = storage.StorageManager()
 console = Console()
-view_album_table = Table(title="Albums")
+
 
 def main_menu():
 
@@ -120,13 +120,15 @@ def view_album():
     if not albums:
         console.print("No albums found, add some!")
     else:
+        view_album_table = Table(title="Albums", show_lines=True)
+        view_album_table.add_column("#", width=4)
         view_album_table.add_column("Artist")
         view_album_table.add_column("Album")
         view_album_table.add_column("Release Year")
         view_album_table.add_column("Rating")
         view_album_table.add_column("Date Added")
         for index, album in enumerate(albums, start=1):
-            view_album_table.add_row(f"{album.artist}", f"{album.title}", f"{album.year}", f"{album.rating}/5", f"{album.date_added}")
+            view_album_table.add_row(str(index), f"{album.artist}", f"{album.title}", f"{album.year}", f"{album.rating}/5", f"{album.date_added}")
     console.print(view_album_table)
     input("Press enter to return to the main menu")
 
